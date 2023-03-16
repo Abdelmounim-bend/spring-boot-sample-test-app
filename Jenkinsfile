@@ -4,6 +4,8 @@ pipeline {
     stage('build') {
       steps {
         echo 'build'
+        bat 'mvn -DskipTests clean package'
+        archiveArtifacts '**/target/*.jar'
       }
     }
 
@@ -12,18 +14,22 @@ pipeline {
         stage('test') {
           steps {
             echo 'test d\'idriss '
+            bat 'mvn -Dest="com.example.testigweb.smoke.**" test'
+            junit '**/target/surefire-reports/TEST-*.xml'
           }
         }
 
-        stage('test fonctionelle') {
+        stage('integration') {
           steps {
             echo 'test fonctionnel'
+            bat 'mvn -Dtest="com.example.testingweb.integration.**" test'
           }
         }
 
-        stage('test integration') {
+        stage('functional') {
           steps {
             echo 'test intégration'
+            bat 'mvn -Dtest="com.example.testingweb.integration.**" test'
           }
         }
 
@@ -32,7 +38,9 @@ pipeline {
 
     stage('deploy') {
       steps {
+        input(message: 'voulez vous continuez', ok: 'lets go')
         echo 'stage deploy'
+        bat 'mvn -DskipTests install'
       }
     }
 
