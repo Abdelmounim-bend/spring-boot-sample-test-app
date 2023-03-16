@@ -23,14 +23,14 @@ pipeline {
 
         stage('test integration') {
           steps {
-            echo 'test intégration'
+            echo 'test intÃ©gration'
           }
         }
 
       }
     }
 
-    stage('déploi') {
+    stage('deploy') {
       steps {
         echo 'stage deploy'
       }
